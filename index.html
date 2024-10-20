@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAR Analyzer</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6dd5ed, #2193b0);
+            /* Gradient background */
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #280b0b;
+            /* Header color */
+        }
+
+        form {
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #0056b3;
+            /* Button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #004494;
+            /* Button hover color */
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #280b0b;
+            /* Footer text color */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to the HAR Analyzer</h1>
+    <form action="/analyze" method="POST" enctype="multipart/form-data">
+        <input type="file" name="har_file" required>
+        <br>
+        <button type="submit">Analyze HAR File</button>
+    </form>
+
+    <footer>
+        <p>Created By <a href="https://rahulranjan.org" style="color: rgb(30, 8, 8);">Rahul Ranjan</a></p>
+    </footer>
+</body>
+
+</html>

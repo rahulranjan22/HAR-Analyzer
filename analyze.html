@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAR Analysis Results</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6dd5ed, #2193b0);
+            /* Gradient background */
+            font-family: Arial, sans-serif;
+            color: #333;
+            padding: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            /* Center align the main title */
+        }
+
+        .summary {
+            text-align: left;
+            /* Left align the summary section */
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #ffffff;
+            /* Footer text color */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HAR Analysis Results</h1>
+
+    <div class="summary">
+        <h2>Summary</h2>
+        <p>Total Requests: {{ summary.total_requests }}</p>
+        <p>Total Time: {{ summary.total_time }} ms</p>
+        <p>Average Time: {{ summary.average_time }} ms</p>
+        <p>Success Count: {{ summary.success_count }}</p>
+        <p>Failure Count: {{ summary.failure_count }}</p>
+    </div>
+
+    <h3>Response Code Details</h3>
+    <h4>1XX: Informational</h4>
+    <p>Total 1XX Responses: {{ summary.status_code_counts[1] }}</p>
+
+    <h4>2XX: Success</h4>
+    <p>Total 2XX Responses: {{ summary.status_code_counts[2] }}</p>
+
+    <h4>3XX: Redirection</h4>
+    <p>Total 3XX Responses: {{ summary.status_code_counts[3] }}</p>
+
+    <h4>4XX: Client Errors</h4>
+    <p>Total 4XX Responses: {{ summary.status_code_counts[4] }}</p>
+
+    <h4>5XX: Server Errors</h4>
+    <p>Total 5XX Responses: {{ summary.status_code_counts[5] }}</p>
+
+    <h2>Request Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>URL</th>
+                <th>Status</th>
+                <th>Content-Type</th>
+                <th>Time (ms)</th>
+                <th>Source IP</th>
+                <th>Response Size (KB)</th>
+                <th>Latency (ms)</th> <!-- New Field for Latency -->
+                <th>Time Breakdown</th>
+                <th>Error Message</th>
+                <th>Request Payload</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in entries_data %}
+            <tr>
+                <td>{{ entry.method }}</td>
+                <td>
+                    <span title="{{ entry.url }}">{{ entry.url[:60] }}{% if entry.url|length > 60 %}...{% endif
+                        %}</span>
+                </td>
+                <td>{{ entry.status }}</td>
+                <td>{{ entry.content_type }}</td>
+                <td>{{ entry.time }}</td>
+                <td>{{ entry.source_ip }}</td>
+                <td>{{ (entry.response_size / 1024) | round(2) }} KB</td> <!-- Convert size to KB -->
+                <td>
+                    {{ (entry.timings.dns + entry.timings.connect + entry.timings.send + entry.timings.wait +
+                    entry.timings.receive) | round(2) }} ms
+                </td> <!-- Calculate and display total latency -->
+                <td>
+                    DNS: {{ entry.timings.dns }} ms<br>
+                    Connect: {{ entry.timings.connect }} ms<br>
+                    Send: {{ entry.timings.send }} ms<br>
+                    Wait: {{ entry.timings.wait }} ms<br>
+                    Receive: {{ entry.timings.receive }} ms
+                </td>
+                <td>{{ entry.error_message if entry.error_message else 'N/A' }}</td>
+                <td>{{ entry.payload }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <footer>
+        <p>Created By <a href="https://rahulranjan.org" style="color: rgb(30, 8, 8);">Rahul Ranjan</a></p>
+    </footer>
+
+    <a href="/">Go back</a>
+</body>
+
+</html>
